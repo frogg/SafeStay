@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+            </style>
+        <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi1TNweOF5G6B8S7ssmXzQxOI2oUQ50tQ">
+            </script>
+        <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false">
+            </script>
+        <script src="jquery.js"></script>
+        <script type="text/javascript">
+            function initialize() {
+                var mapOptions = {
+                    center: { lat: 37.774546, lng: -122.433523},
+                    zoom: 13
+                };
+                
+                $.get( "http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&country=AT&username=demo", function( data ) {
+                      
+                      alert( data.postalcodes[0].adminCode1 );
+                      });
+                
+                var heatMapData = [
+                                   {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
+                                   new google.maps.LatLng(37.782, -122.445),
+                                   {location: new google.maps.LatLng(37.782, -122.443), weight: 2},
+                                   {location: new google.maps.LatLng(37.782, -122.441), weight: 3},
+                                   {location: new google.maps.LatLng(37.782, -122.439), weight: 2}
+                                   ];
+                                   
+                                   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                                   
+                                   
+                                   var heatmap = new google.maps.visualization.HeatmapLayer({
+                                                                                            data: heatMapData
+                                                                                            });
+                                                                                            heatmap.setMap(map);
+                                                                                            
+            }
+        google.maps.event.addDomListener(window, 'load', initialize);
+            </script>
+    </head>
+    <body>
+        <div id="map-canvas"></div>
+    </body>
+</html>
