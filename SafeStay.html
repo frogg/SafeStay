@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"> </meta>
             <style type="text/css">
                 html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
                 </style>
+                
+                <title>San Francisco</title>
 
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -33,16 +35,21 @@
                 };
                 
                 $.get( "safestay.passwords", function( data ) {
-                $.get("https://api.sendgrid.com/api/mail.send.json?api_user=frederik&api_key="+data+"&to=email&subject=Your Booking Information for San Francsico&html=<h1>Your Reservation for Folsom Inn in San Francisco</h1>Hello Frederik,<br><br>your reservation in Folsom Inn in San Fracnsico has been confirmed.<br><br>See the booking details of your reservation here: <a href=\"\">reservation details</a><br><br>Stay safe with SafeStay.<br>Have a nice time in San Francisco!<br><br>The SafeStay Team<br><br><img src=\"https://raw.githubusercontent.com/quappi/SafeStay/master/images/SafeStayLogo.png\">&from=booking@safestay.com");
+                var email = "";
+                $.get("https://api.sendgrid.com/api/mail.send.json?api_user=frederik&api_key="+data+"&to="+email+"&subject=Your Booking Information for San Francsico&html=<h1>Your Reservation for Folsom Inn in San Francisco</h1>Hello Frederik,<br><br>your reservation in Folsom Inn in San Fracnsico has been confirmed.<br><br>See the booking details of your reservation here: <a href=\"\">reservation details</a><br><br>Stay safe with SafeStay.<br>Have a nice time in San Francisco!<br><br>The SafeStay Team<br><br><img src=\"https://raw.githubusercontent.com/quappi/SafeStay/master/images/SafeStayLogo.png\">&from=booking@safestay.com");
                 });
                 
                 var heatMapData = [];
                 
                 var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                 
+                
+                
                 $.get( "https://nameless-shelf-8882.herokuapp.com/crime/get", function( data ) {
                 
-                    for(i = 0; i < data.length; i++) {
+                var length = data.length;
+                
+                    for(i = 0; i < length; i++) {
                     
                     heatMapData[i] = {location: new google.maps.LatLng(data[i].latitude, data[i].longitude), weight: 1};
                     
@@ -76,10 +83,13 @@
                     
                 
                     var heatmap = new google.maps.visualization.HeatmapLayer({ data: heatMapData }); 
-                    heatmap.setOptions({radius:50});
+                    heatmap.setOptions({radius:40});
+                    
                     
                     
                     heatmap.setMap(map);
+                    
+   
                     
                     var link = document.getElementById('loadingScreen');
 					link.style.display = 'none';
@@ -90,6 +100,11 @@
                 
                 
                 
+                $.get( "https://nameless-shelf-8882.herokuapp.com/hotel/get", function( data ) {
+                
+                
+                	setMarkers(map, data);
+                });
                 
                 
                 
@@ -98,26 +113,23 @@
                 
                 
                 
-                setMarkers(map, hotels);
+                
+                
                 
                 }
                 
-                var hotels = [
-                ['1', 37.774546, -122.433523, "125$","Fell Inn"],
-                ['2', 37.786, -122.433523, "250$","Seaside Inn"],
-                ['5', 37.796, -122.433523, "99$","Folsom Inn"]
-                ];
+                
                 
                 function setMarkers(map, locations) {
                 
                 var image = {
                 url: 'images/hotel.png',
                 // This marker is 20 pixels wide by 32 pixels tall.
-                size: new google.maps.Size(32, 32),
+                size: new google.maps.Size(16, 16),
                 // The origin for this image is 0,0.
                 origin: new google.maps.Point(0,0),
                 // The anchor for this image is the base of the flagpole at 0,32.
-                anchor: new google.maps.Point(16, 16)
+                anchor: new google.maps.Point(8, 8)
                 };
                 
                 
@@ -126,41 +138,64 @@
                 
                 for (var i = 0; i < locations.length; i++) {
                 var hotel = locations[i];
-                var myLatLng = new google.maps.LatLng(hotel[1], hotel[2]);
+                var myLatLng = new google.maps.LatLng(hotel.latitude, hotel.longitude);
                 
                 
                 
                 var marker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
-                id: hotel[0],
+                id: hotel.id,
                 icon: image,
-                title: hotel[4],
-                price: hotel[3]
+                title: hotel.name,
+                price: hotel.min_daily_rate,
+                phonenumber: hotel.phone_number,
+                url: hotel.url
                 });
                 
                 
                 
                 google.maps.event.addListener(marker, 'click', function() {
                 infowindow.setContent('<div style="text-align: center; width: 300px"><h1>'+this.title+'</h1>'+
-                'San Francisco, CA 94133, Vereinigte Staaten<br>' +
-                'Website: <a href="">www.hotel.us</a><br>' +
-                '✆ (409) 123 456 789<br>' +
-                '<br>Price: <b>'+ this.price + '</b>' +
+                'San Francisco, CA 94133, US<br>' +
+                '✆ ' + this.phonenumber +'<br>' +
+                '<br>Price: <b>'+ this.price + '$</b> per night' +
                 
-                '<br><button type="button" id="hotel-button" class="btn btn-info" data-toggle="modal" data-target="#hotel-box">Make Reservation</button><br></div>'+
+                '<br><a href="'+this.url+'" target="_blank">Make Reservation</a><br>'+
+
                 '<a href="http://www.expedia.com/Flights" target="_blank">Book Flight</a><br>'+
                 '<br><button type="button" id="modal-button" class="btn btn-info" data-toggle="modal" data-target="#modal-box">Safety Statistics</button><br></div>')
                 infowindow.open(map,this);
                 });
+                
+                
+                
+                
                 }
                 }
+
+                // google.maps.event.addListener(marker, 'click', function() {
+                // infowindow.setContent('<h1>'+this.title+'</h1>'+
+                // 'San Francisco, CA 94133, Vereinigte Staaten<br>' +
+                // 'Website: <a href="">www.hotel.us</a><br>' +
+                // '✆ (409) 123 456 789<br><br>' +
+                // '<br>Price: <b>'+ this.price + '</b>' +
+                
+                // '<br><a href="">Make Reservation</a><br>'+
+                // '<a href="">Book Flight</a><br>'+
+                // '<br><a href="">Detailed Safety Statistics</a><br>')
+                // infowindow.open(map,this);
+                // });
+                // }
+                // }
                 
                 var contentString = 'HI';
                 
                 var infowindow = new google.maps.InfoWindow({
                 
                 });
+                
+                
                 
                 
                 
@@ -176,69 +211,7 @@
             </div>
             <div id="map-canvas"></div>
 
-            <!-- Hotel Modal -->
-              <div class="modal fade" id="hotel-box" role="dialog">
-                <div class="modal-dialog">
-                
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h3 class="modal-title">Make Reservation</h3>
-                    </div>
-                    <div class="modal-body">
-                      <div class="container">
-                          <div class="container">
-                              <form role="form">
-                                <div class="form-group">
-                                  <label for="first">First Name:</label>
-                                  <input type="text" class="form-control" id="first" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                  <label for="last">Last Name:</label>
-                                  <input type="text" class="form-control" id="last" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                  <label for="address">Address:</label>
-                                  <input type="text" class="form-control" id="Street" placeholder="Street"><br>
-                                  <input type="text" class="form-control" id="Secondary" placeholder="City, State, Country"><br>
-                                </div>
-                                <div class="form-group">
-                                  <label for="email">Email:</label>
-                                  <input type="email" class="form-control" id="email" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                  <label for="phone">Phone Number:</label>
-                                  <input type="text" class="form-control" id="phone" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                  <label for="type">Credit Card Type:</label>
-                                  <input type="select" class="form-control" id="type" options="American Express,Discover Card,Master Card,Visa"placeholder="">
-                                </div>
-                                <div class="form-group">
-                                  <label for="card-number">Credit Card #:</label>
-                                  <input type="text" class="form-control" id="card-number" placeholder="">
-                                </div>
-                                <div class="form-group">
-                                  <label for="card-number">Credit Card #:</label>
-                                  <input type="text" class="form-control" id="card-number" placeholder="">
-                                </div>
-                                <div class="checkbox">
-                                  <label><input type="checkbox"> Remember me</label>
-                                </div>
-                                <button type="submit" class="btn btn-default">Submit</button>
-                              </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                  </div>
-                  
-                </div>
-              </div>
-
-            <!-- Safety Modal -->
+            <!-- Modal -->
               <div class="modal fade" id="modal-box" role="dialog">
                 <div class="modal-dialog">
                 
@@ -248,9 +221,9 @@
                       <h3 class="modal-title">Area Safety Statistics</h3>
                     </div>
                     <div class="modal-body">
-                      <h4>Most recent crime: <bold>INPUT RECENT CRIME</bold></h4> 
-                      <h4>Most common crime: <bold>INPUT COMMON CRIME</bold></h4> 
-                      <h4>Safety score: <bold>INPUT SCORE (if stored/accessible)</bold></h4> 
+                      <h4>Most recent crime: <bold>Theft</bold></h4> 
+                      <h4>Most common crime: <bold>Simple Assult</bold></h4> 
+
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
