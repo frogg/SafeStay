@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="utf-8">
         <style type="text/css">
             html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
             </style>
         <link href='http://fonts.googleapis.com/css?family=Lobster+Two:400,400italic,700italic' rel='stylesheet' type='text/css'>
+        
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="assets/style.css">
         
@@ -19,29 +21,18 @@
             </script>
         <script src="assets/jquery.js"></script>
         <script type="text/javascript">
+            
             function initialize() {
                 var mapOptions = {
                     center: { lat: 37.774546, lng: -122.433523},
                     zoom: 13
                 };
 
+        $.get( "safestay.passwords", function( data ) {
+                $.get("https://api.sendgrid.com/api/mail.send.json?api_user=frederik&api_key="+data+"&to=f@quappi.com&subject=Your Booking Information for San Francsico&html=<h1>Your Reservation for Folsom Inn in San Francisco</h1>Hello Frederik,<br><br>your reservation in Folsom Inn in San Fracnsico has been confirmed.<br><br>See the booking details of your reservation here: <a href=\"\">reservation details</a><br><br>Stay safe with SafeStay.<br>Have a nice time in San Francisco!<br><br>The SafeStay Team<br>&from=booking@safestay.com");
+                });
                 
-                var heatMapData = [
-                                   {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
-                                   new google.maps.LatLng(37.782, -122.445),
-                                   {location: new google.maps.LatLng(37.782, -122.443), weight: 2},
-                                   {location: new google.maps.LatLng(37.782, -122.441), weight: 3},
-                                   {location: new google.maps.LatLng(37.782, -122.439), weight: 2}
-                                   ];
-                                   
-                                   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-                                   
-                                   
-                                   var heatmap = new google.maps.visualization.HeatmapLayer({
-                                                                                            data: heatMapData
-                                                                                            });
-                                                                                            heatmap.setMap(map);
-                                                                                            
+                
                 $.get( "https://nameless-shelf-8882.herokuapp.com/crime/", function( data ) {
                       var obj = jQuery.parseJSON(data);
                       
@@ -112,11 +103,13 @@
                                                                   google.maps.event.addListener(marker, 'click', function() {
                                                                                                 infowindow.setContent('<h1>'+this.title+'</h1>'+
                                                                                                                       'San Francisco, CA 94133, Vereinigte Staaten<br>' +
-                                                                                                                      '<a href="">www.hotel.us</a><br>' +
-                                                                                                                      '(409) 123 456 789<br><br>' +
+                                                                                                                      'Website: <a href="">www.hotel.us</a><br>' +
+                                                                                                                      '✆ (409) 123 456 789<br><br>' +
                                                                                                                       '<br>Price: <b>'+ this.price + '</b>' +
                                                                                                                       
-                                                                                                                      '<br><a href="">Make Reservation</a>')
+                                                                                                                      '<br><a href="">Make Reservation</a><br>'+
+                                                                                                                      '<a href="">Book Flight</a><br>'+
+                                                                                                                      '<br><a href="">Detailed Safety Statistics</a><br>')
                                                                                                 infowindow.open(map,this);
                                                                                                 });
                           }
