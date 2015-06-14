@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -9,14 +10,27 @@
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
         <link rel="stylesheet" type="text/css" href="assets/style.css">
         <script src="assets/javascript.js"></script>   
+          
     </head>
 
     <body>
-        <div class="container-landing">
-            <div id="logo"> SafeStay </div>
-            <div id="input-box">
-                <input type="text" id="enter-city" placeholder="Enter a city">
-                <div class="glyphicon glyphicon-search"></div>
+        <div class="container-safety">
+            <div id="page-descr">
+              <div id="sf">Safety Information</div>
+            </div>
+
+            <div id="safety-info">
+                <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">View Radius
+                  <span class="caret"></span></button>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">1 mile</a></li>
+                    <li><a href="#">5 miles</a></li>
+                    <li><a href="#">10 miles</a></li>
+                    <li><a href="#">20 miles</a></li>
+                  </ul>
+                </div>
+
             </div>
         </div>
 

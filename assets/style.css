@@ -85,4 +85,23 @@
 	cursor: pointer;
 }
 
+#safety-info {
+	position: relative;
+	width: 100%;
+	height: calc(100vh - 50px);
+	top: 70px;
+
+}
+
+
+.dropdown-menu {
+	min-width: 10px;
+}
+
+.dropdown {
+	position: relative;
+	left: 80%;
+}
+
+
 
