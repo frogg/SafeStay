@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8"> </meta>
             <style type="text/css">
                 html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
                 </style>
+                
+                <title>San Francisco</title>
 
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
                 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
@@ -40,9 +42,13 @@
                 
                 var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
                 
+                
+                
                 $.get( "https://nameless-shelf-8882.herokuapp.com/crime/get", function( data ) {
                 
-                    for(i = 0; i < data.length; i++) {
+                var length = data.length;
+                
+                    for(i = 0; i < length; i++) {
                     
                     heatMapData[i] = {location: new google.maps.LatLng(data[i].latitude, data[i].longitude), weight: 1};
                     
@@ -76,10 +82,13 @@
                     
                 
                     var heatmap = new google.maps.visualization.HeatmapLayer({ data: heatMapData }); 
-                    heatmap.setOptions({radius:50});
+                    heatmap.setOptions({radius:40});
+                    
                     
                     
                     heatmap.setMap(map);
+                    
+   
                     
                     var link = document.getElementById('loadingScreen');
 					link.style.display = 'none';
@@ -90,6 +99,11 @@
                 
                 
                 
+                $.get( "https://nameless-shelf-8882.herokuapp.com/hotel/get", function( data ) {
+                
+                
+                	setMarkers(map, data);
+                });
                 
                 
                 
@@ -98,26 +112,23 @@
                 
                 
                 
-                setMarkers(map, hotels);
+                
+                
                 
                 }
                 
-                var hotels = [
-                ['1', 37.774546, -122.433523, "125$","Fell Inn"],
-                ['2', 37.786, -122.433523, "250$","Seaside Inn"],
-                ['5', 37.796, -122.433523, "99$","Folsom Inn"]
-                ];
+                
                 
                 function setMarkers(map, locations) {
                 
                 var image = {
                 url: 'images/hotel.png',
                 // This marker is 20 pixels wide by 32 pixels tall.
-                size: new google.maps.Size(32, 32),
+                size: new google.maps.Size(16, 16),
                 // The origin for this image is 0,0.
                 origin: new google.maps.Point(0,0),
                 // The anchor for this image is the base of the flagpole at 0,32.
-                anchor: new google.maps.Point(16, 16)
+                anchor: new google.maps.Point(8, 8)
                 };
                 
                 
@@ -126,33 +137,37 @@
                 
                 for (var i = 0; i < locations.length; i++) {
                 var hotel = locations[i];
-                var myLatLng = new google.maps.LatLng(hotel[1], hotel[2]);
+                var myLatLng = new google.maps.LatLng(hotel.latitude, hotel.longitude);
                 
                 
                 
                 var marker = new google.maps.Marker({
                 position: myLatLng,
                 map: map,
-                id: hotel[0],
+                id: hotel.id,
                 icon: image,
-                title: hotel[4],
-                price: hotel[3]
+                title: hotel.name,
+                price: hotel.min_daily_rate,
+                phonenumber: hotel.phone_number
                 });
                 
                 
                 
                 google.maps.event.addListener(marker, 'click', function() {
                 infowindow.setContent('<div style="text-align: center; width: 300px"><h1>'+this.title+'</h1>'+
-                'San Francisco, CA 94133, Vereinigte Staaten<br>' +
-                'Website: <a href="">www.hotel.us</a><br>' +
-                '✆ (409) 123 456 789<br>' +
-                '<br>Price: <b>'+ this.price + '</b>' +
+                'San Francisco, CA 94133, US<br>' +
+                '✆ ' + this.phonenumber +'<br>' +
+                '<br>Price: <b>'+ this.price + '$</b> per night' +
                 
-                '<br><a href="http://www.expedia.com/Hotels" target="_blank">Make Reservation</a><br>'+
-                '<a href="http://www.expedia.com/Flights" target=:_blank">Book Flight</a><br>'+
+                '<br><a href="http://www.hoteldrisco.com" target="_blank">Make Reservation</a><br>'+
+                '<a href="http://www.expedia.com/Flights" target="_blank">Book Flight</a><br>'+
                 '<br><button type="button" id="modal-button" class="btn btn-info" data-toggle="modal" data-target="#modal-box">Safety Statistics</button><br></div>')
                 infowindow.open(map,this);
                 });
+                
+                
+                
+                
                 }
                 }
 
@@ -179,6 +194,8 @@
                 
                 
                 
+                
+                
                 google.maps.event.addDomListener(window, 'load', initialize);
                 </script>
                 </head>
@@ -201,9 +218,9 @@
                       <h3 class="modal-title">Area Safety Statistics</h3>
                     </div>
                     <div class="modal-body">
-                      <h4>Most recent crime: <bold>INPUT RECENT CRIME</bold></h4> 
-                      <h4>Most common crime: <bold>INPUT COMMON CRIME</bold></h4> 
-                      <h4>Safety score: <bold>INPUT SCORE (if stored/accessible)</bold></h4> 
+                      <h4>Most recent crime: <bold>Theft</bold></h4> 
+                      <h4>Most common crime: <bold>Simple Assult</bold></h4> 
+
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
