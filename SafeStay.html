@@ -148,28 +148,13 @@
                 '✆ (409) 123 456 789<br>' +
                 '<br>Price: <b>'+ this.price + '</b>' +
                 
-                '<br><a href="http://www.expedia.com/Hotels" target="_blank">Make Reservation</a><br>'+
+                '<br><button type="button" id="hotel-button" class="btn btn-info" data-toggle="modal" data-target="#hotel-box">Make Reservation</button><br></div>'+
                 '<a href="http://www.expedia.com/Flights" target="_blank">Book Flight</a><br>'+
                 '<br><button type="button" id="modal-button" class="btn btn-info" data-toggle="modal" data-target="#modal-box">Safety Statistics</button><br></div>')
                 infowindow.open(map,this);
                 });
                 }
                 }
-
-                // google.maps.event.addListener(marker, 'click', function() {
-                // infowindow.setContent('<h1>'+this.title+'</h1>'+
-                // 'San Francisco, CA 94133, Vereinigte Staaten<br>' +
-                // 'Website: <a href="">www.hotel.us</a><br>' +
-                // '✆ (409) 123 456 789<br><br>' +
-                // '<br>Price: <b>'+ this.price + '</b>' +
-                
-                // '<br><a href="">Make Reservation</a><br>'+
-                // '<a href="">Book Flight</a><br>'+
-                // '<br><a href="">Detailed Safety Statistics</a><br>')
-                // infowindow.open(map,this);
-                // });
-                // }
-                // }
                 
                 var contentString = 'HI';
                 
@@ -191,7 +176,69 @@
             </div>
             <div id="map-canvas"></div>
 
-            <!-- Modal -->
+            <!-- Hotel Modal -->
+              <div class="modal fade" id="hotel-box" role="dialog">
+                <div class="modal-dialog">
+                
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+                      <h3 class="modal-title">Make Reservation</h3>
+                    </div>
+                    <div class="modal-body">
+                      <div class="container">
+                          <div class="container">
+                              <form role="form">
+                                <div class="form-group">
+                                  <label for="first">First Name:</label>
+                                  <input type="text" class="form-control" id="first" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                  <label for="last">Last Name:</label>
+                                  <input type="text" class="form-control" id="last" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                  <label for="address">Address:</label>
+                                  <input type="text" class="form-control" id="Street" placeholder="Street"><br>
+                                  <input type="text" class="form-control" id="Secondary" placeholder="City, State, Country"><br>
+                                </div>
+                                <div class="form-group">
+                                  <label for="email">Email:</label>
+                                  <input type="email" class="form-control" id="email" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                  <label for="phone">Phone Number:</label>
+                                  <input type="text" class="form-control" id="phone" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                  <label for="type">Credit Card Type:</label>
+                                  <input type="select" class="form-control" id="type" options="American Express,Discover Card,Master Card,Visa"placeholder="">
+                                </div>
+                                <div class="form-group">
+                                  <label for="card-number">Credit Card #:</label>
+                                  <input type="text" class="form-control" id="card-number" placeholder="">
+                                </div>
+                                <div class="form-group">
+                                  <label for="card-number">Credit Card #:</label>
+                                  <input type="text" class="form-control" id="card-number" placeholder="">
+                                </div>
+                                <div class="checkbox">
+                                  <label><input type="checkbox"> Remember me</label>
+                                </div>
+                                <button type="submit" class="btn btn-default">Submit</button>
+                              </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+
+            <!-- Safety Modal -->
               <div class="modal fade" id="modal-box" role="dialog">
                 <div class="modal-dialog">
                 
