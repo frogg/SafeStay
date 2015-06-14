@@ -35,7 +35,8 @@
                 };
                 
                 $.get( "safestay.passwords", function( data ) {
-                $.get("https://api.sendgrid.com/api/mail.send.json?api_user=frederik&api_key="+data+"&to=email&subject=Your Booking Information for San Francsico&html=<h1>Your Reservation for Folsom Inn in San Francisco</h1>Hello Frederik,<br><br>your reservation in Folsom Inn in San Fracnsico has been confirmed.<br><br>See the booking details of your reservation here: <a href=\"\">reservation details</a><br><br>Stay safe with SafeStay.<br>Have a nice time in San Francisco!<br><br>The SafeStay Team<br><br><img src=\"https://raw.githubusercontent.com/quappi/SafeStay/master/images/SafeStayLogo.png\">&from=booking@safestay.com");
+                var email = "";
+                $.get("https://api.sendgrid.com/api/mail.send.json?api_user=frederik&api_key="+data+"&to="+email+"&subject=Your Booking Information for San Francsico&html=<h1>Your Reservation for Folsom Inn in San Francisco</h1>Hello Frederik,<br><br>your reservation in Folsom Inn in San Fracnsico has been confirmed.<br><br>See the booking details of your reservation here: <a href=\"\">reservation details</a><br><br>Stay safe with SafeStay.<br>Have a nice time in San Francisco!<br><br>The SafeStay Team<br><br><img src=\"https://raw.githubusercontent.com/quappi/SafeStay/master/images/SafeStayLogo.png\">&from=booking@safestay.com");
                 });
                 
                 var heatMapData = [];
@@ -148,7 +149,8 @@
                 icon: image,
                 title: hotel.name,
                 price: hotel.min_daily_rate,
-                phonenumber: hotel.phone_number
+                phonenumber: hotel.phone_number,
+                url: hotel.url
                 });
                 
                 
@@ -159,7 +161,8 @@
                 '✆ ' + this.phonenumber +'<br>' +
                 '<br>Price: <b>'+ this.price + '$</b> per night' +
                 
-                '<br><a href="http://www.hoteldrisco.com" target="_blank">Make Reservation</a><br>'+
+                '<br><a href="'+this.url+'" target="_blank">Make Reservation</a><br>'+
+
                 '<a href="http://www.expedia.com/Flights" target="_blank">Book Flight</a><br>'+
                 '<br><button type="button" id="modal-button" class="btn btn-info" data-toggle="modal" data-target="#modal-box">Safety Statistics</button><br></div>')
                 infowindow.open(map,this);
