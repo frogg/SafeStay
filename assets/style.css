@@ -136,15 +136,18 @@
 	position: relative;
 	width: 340px;
 	display: inline-block;
-	left: 30%;
+	left: 38%;
 	margin: auto 0;
-	top: 180px;
+	top: 210px;
 }
 
 #datepicker, #datepicker2 {
 	width: 110px;
 	border-radius: 5px;
 	border: 0px solid;
+	padding-left: 5px;
 }
+
+
 
 
