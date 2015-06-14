@@ -11,8 +11,9 @@
 	text-align: center;
 	font-size: 3em;
 	background-color: white;
-	opacity: 0.6;
+	opacity: 0.8;
 	color: white;
+	pointer-events: none;
 }
 
 #sf {
@@ -58,7 +59,7 @@
 }
 
 
-.glyphicon{
+.glyphicon {
 	position: absolute;	
 	top: 22%;
 	right: 5%;
