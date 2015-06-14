@@ -40,8 +40,9 @@
                 
                     for(i = 0; i < data.length; i++) {
                     
+                    heatMapData[i] = {location: new google.maps.LatLng(data[i].latitude, data[i].longitude), weight: 1};
                     
-                        if(data[i].type==="SIMPLE ASSULT") {
+                        /*if(data[i].type==="SIMPLE ASSULT") {
                         heatMapData[i] = {location: new google.maps.LatLng(data[i].latitude, data[i].longitude), weight: 1};
                         } else if (data[i].type==="BUGLAR") {
                         heatMapData[i] = {location: new google.maps.LatLng(data[i].latitude, data[i].longitude), weight: 2};
@@ -63,7 +64,7 @@
                         heatMapData[i] = {location: new google.maps.LatLng(data[i].latitude, data[i].longitude), weight: 7};
                         } else {
                         heatMapData[i] = {location: new google.maps.LatLng(data[i].latitude, data[i].longitude), weight: 1};
-                        }
+                        }*/
                         
                         
                     }
@@ -75,6 +76,9 @@
                     
                     
                     heatmap.setMap(map);
+                    
+                    var link = document.getElementById('loadingScreen');
+					link.style.display = 'none';
                     
 
                 });
@@ -162,9 +166,16 @@
     <body>
         <div class="container">
             <div id="page-descr">
-                <div id="sf">San Francisco</div>
+                <div id="sf">San Francisco
+                
+                </div>
             </div>
             <div id="map-canvas"></div>
         </div>
+        
+        <div id="loadingScreen">
+        	<center><img src="./images/loading.gif" id='loadingindicator'></center>
+        </div>
+        
     </body>
 </html>
