@@ -11,6 +11,9 @@
         <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi1TNweOF5G6B8S7ssmXzQxOI2oUQ50tQ">
             </script>
+        
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAi1TNweOF5G6B8S7ssmXzQxOI2oUQ50tQ"></script>
+        
         <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?libraries=visualization&sensor=true_or_false">
             </script>
@@ -21,11 +24,7 @@
                     center: { lat: 37.774546, lng: -122.433523},
                     zoom: 13
                 };
-                
-                // $.get( "http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&country=AT&username=demo", function( data ) {
-                      
-                //       alert( data.postalcodes[0].adminCode1 );
-                //       });
+
                 
                 var heatMapData = [
                                    {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
@@ -43,7 +42,94 @@
                                                                                             });
                                                                                             heatmap.setMap(map);
                                                                                             
+                $.get( "https://nameless-shelf-8882.herokuapp.com/crime/", function( data ) {
+                      var obj = jQuery.parseJSON(data);
+                      
+                      alert( obj.latitude );
+                      
+                      });
+                      
+                      var heatMapData = [];
+                      var count = 0;
+                      for(x = 0; x < 50; x++) {
+                          for(y = 0; y < 50; y++) {
+                              if(Math.random()<0.5) {
+                                  heatMapData[count] = {location: new google.maps.LatLng(37.782 + y/2000, -122.447 + x/2000), weight: 0.5};
+                              }
+                              count++;
+                          }
+                      }
+                      
+                      
+                      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                      
+                      
+                      var heatmap = new google.maps.visualization.HeatmapLayer({ data: heatMapData }); heatmap.setMap(map);
+                      
+                      setMarkers(map, hotels);
+                      
             }
+        
+        var hotels = [
+                      ['1', 37.774546, -122.433523, "125$","Fell Inn"],
+                      ['2', 37.786, -122.433523, "250$","Seaside Inn"],
+                      ['5', 37.796, -122.433523, "99$","Folsom Inn"]
+                      ];
+                      
+                      function setMarkers(map, locations) {
+                          
+                          var image = {
+                              url: 'images/hotel.png',
+                              // This marker is 20 pixels wide by 32 pixels tall.
+                              size: new google.maps.Size(32, 32),
+                              // The origin for this image is 0,0.
+                              origin: new google.maps.Point(0,0),
+                              // The anchor for this image is the base of the flagpole at 0,32.
+                              anchor: new google.maps.Point(16, 16)
+                          };
+                          
+                          
+                          var hotelMarkers = [];
+                          
+                          
+                          for (var i = 0; i < locations.length; i++) {
+                              var hotel = locations[i];
+                              var myLatLng = new google.maps.LatLng(hotel[1], hotel[2]);
+                              
+                              
+                              
+                              var marker = new google.maps.Marker({
+                                                                  position: myLatLng,
+                                                                  map: map,
+                                                                  id: hotel[0],
+                                                                  icon: image,
+                                                                  title: hotel[4],
+                                                                  price: hotel[3]
+                                                                  });
+                                                                  
+                                                                  
+                                                                  
+                                                                  google.maps.event.addListener(marker, 'click', function() {
+                                                                                                infowindow.setContent('<h1>'+this.title+'</h1>'+
+                                                                                                                      'San Francisco, CA 94133, Vereinigte Staaten<br>' +
+                                                                                                                      '<a href="">www.hotel.us</a><br>' +
+                                                                                                                      '(409) 123 456 789<br><br>' +
+                                                                                                                      '<br>Price: <b>'+ this.price + '</b>' +
+                                                                                                                      
+                                                                                                                      '<br><a href="">Make Reservation</a>')
+                                                                                                infowindow.open(map,this);
+                                                                                                });
+                          }
+                      }
+        
+        var contentString = 'HI';
+        
+        var infowindow = new google.maps.InfoWindow({
+        
+        });
+        
+        
+        
         google.maps.event.addDomListener(window, 'load', initialize);
             </script>
     </head>
