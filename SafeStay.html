@@ -4,6 +4,13 @@
         <style type="text/css">
             html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
             </style>
+        <link href='http://fonts.googleapis.com/css?family=Lobster+Two:400,400italic,700italic' rel='stylesheet' type='text/css'>
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="assets/style.css">
+        
+        <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAi1TNweOF5G6B8S7ssmXzQxOI2oUQ50tQ">
+            </script>
         
         <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyAi1TNweOF5G6B8S7ssmXzQxOI2oUQ50tQ"></script>
         
@@ -17,7 +24,24 @@
                     center: { lat: 37.774546, lng: -122.433523},
                     zoom: 13
                 };
+
                 
+                var heatMapData = [
+                                   {location: new google.maps.LatLng(37.782, -122.447), weight: 0.5},
+                                   new google.maps.LatLng(37.782, -122.445),
+                                   {location: new google.maps.LatLng(37.782, -122.443), weight: 2},
+                                   {location: new google.maps.LatLng(37.782, -122.441), weight: 3},
+                                   {location: new google.maps.LatLng(37.782, -122.439), weight: 2}
+                                   ];
+                                   
+                                   var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                                   
+                                   
+                                   var heatmap = new google.maps.visualization.HeatmapLayer({
+                                                                                            data: heatMapData
+                                                                                            });
+                                                                                            heatmap.setMap(map);
+                                                                                            
                 $.get( "https://nameless-shelf-8882.herokuapp.com/crime/", function( data ) {
                       var obj = jQuery.parseJSON(data);
                       
@@ -110,6 +134,11 @@
             </script>
     </head>
     <body>
-        <div id="map-canvas"></div>
+        <div class="container">
+            <div id="page-descr">
+              <div id="sf">San Francisco</div>
+            </div>
+            <div id="map-canvas"></div>
+        </div>
     </body>
 </html>
