@@ -29,7 +29,7 @@
                 };
 
         $.get( "safestay.passwords", function( data ) {
-                $.get("https://api.sendgrid.com/api/mail.send.json?api_user=frederik&api_key="+data+"&to=f@quappi.com&subject=Your Booking Information for San Francsico&html=<h1>Your Reservation for Folsom Inn in San Francisco</h1>Hello Frederik,<br><br>your reservation in Folsom Inn in San Fracnsico has been confirmed.<br><br>See the booking details of your reservation here: <a href=\"\">reservation details</a><br><br>Stay safe with SafeStay.<br>Have a nice time in San Francisco!<br><br>The SafeStay Team<br><br><img src=\"https://raw.githubusercontent.com/quappi/SafeStay/master/images/SafeStayLogo.png\">&from=booking@safestay.com");
+                $.get("https://api.sendgrid.com/api/mail.send.json?api_user=frederik&api_key="+data+"&to=email&subject=Your Booking Information for San Francsico&html=<h1>Your Reservation for Folsom Inn in San Francisco</h1>Hello Frederik,<br><br>your reservation in Folsom Inn in San Fracnsico has been confirmed.<br><br>See the booking details of your reservation here: <a href=\"\">reservation details</a><br><br>Stay safe with SafeStay.<br>Have a nice time in San Francisco!<br><br>The SafeStay Team<br><br><img src=\"https://raw.githubusercontent.com/quappi/SafeStay/master/images/SafeStayLogo.png\">&from=booking@safestay.com");
                 });
                 
                 
