@@ -103,5 +103,33 @@
 	left: 80%;
 }
 
+.modal-content {
+	width: 85%;
+	position: relative;
+	top: 30%;
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.modal-body * {
+	position: relative;
+	left: %;
+}
+
+#modal-button {
+	width: 200px;
+}
+
+.modal-dialog {
+	height: 100%;
+}
+
+.centered {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	left: 50%;
+	transform: translateX(-50%);
+}
 
 
